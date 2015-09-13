@@ -1,3 +1,71 @@
+usuario:
+    resource: "@UsuarioBundle/Resources/config/routing.yml"
+    prefix:   /
+
+detalle_producto:
+    resource: "@DetalleProductoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+producto:
+    resource: "@ProductoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+recordatorio:
+    resource: "@RecordatorioBundle/Resources/config/routing.yml"
+    prefix:   /
+
+seguimiento:
+    resource: "@SeguimientoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+evento:
+    resource: "@EventoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+language:
+    resource: "@LanguageBundle/Resources/config/routing.yml"
+    prefix:   /
+
+country:
+    resource: "@CountryBundle/Resources/config/routing.yml"
+    prefix:   /
+
+city:
+    resource: "@CityBundle/Resources/config/routing.yml"
+    prefix:   /
+
+city_dato:
+    resource: "@CityDatoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tipo_dato:
+    resource: "@TipoDatoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+direccion:
+    resource: "@DireccionBundle/Resources/config/routing.yml"
+    prefix:   /
+
+telefono:
+    resource: "@TelefonoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+correo:
+    resource: "@CorreoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+proveedor:
+    resource: "@ProveedorBundle/Resources/config/routing.yml"
+    prefix:   /
+
+cliente:
+    resource: "@ClienteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+contacto:
+    resource: "@ContactoBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
