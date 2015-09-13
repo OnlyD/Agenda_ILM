@@ -1,0 +1,3 @@
+tipo_dato_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: TipoDatoBundle:Default:index }

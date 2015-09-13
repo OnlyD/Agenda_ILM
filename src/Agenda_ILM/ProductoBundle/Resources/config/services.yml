@@ -1,0 +1,4 @@
+services:
+#    producto.example:
+#        class: Agenda_ILM\ProductoBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

@@ -1,0 +1,4 @@
+services:
+#    tipo_dato.example:
+#        class: Agenda_ILM\TipoDatoBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

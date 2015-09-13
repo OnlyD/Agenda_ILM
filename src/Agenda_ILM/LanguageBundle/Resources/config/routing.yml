@@ -1,0 +1,3 @@
+language_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: LanguageBundle:Default:index }

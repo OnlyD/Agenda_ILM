@@ -1,0 +1,4 @@
+services:
+#    seguimiento.example:
+#        class: Agenda_ILM\SeguimientoBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

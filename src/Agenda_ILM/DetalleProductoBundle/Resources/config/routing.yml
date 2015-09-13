@@ -1,0 +1,3 @@
+detalle_producto_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: DetalleProductoBundle:Default:index }

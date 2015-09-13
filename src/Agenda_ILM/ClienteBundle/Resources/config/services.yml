@@ -1,0 +1,4 @@
+services:
+#    cliente.example:
+#        class: Agenda_ILM\ClienteBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

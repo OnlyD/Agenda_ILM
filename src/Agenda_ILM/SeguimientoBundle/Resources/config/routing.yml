@@ -1,0 +1,3 @@
+seguimiento_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: SeguimientoBundle:Default:index }

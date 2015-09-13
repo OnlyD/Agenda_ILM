@@ -1,0 +1,3 @@
+city_dato_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: CityDatoBundle:Default:index }

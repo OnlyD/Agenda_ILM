@@ -1,0 +1,3 @@
+contacto_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ContactoBundle:Default:index }

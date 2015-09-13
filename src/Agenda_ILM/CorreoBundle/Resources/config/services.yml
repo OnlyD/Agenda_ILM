@@ -1,0 +1,4 @@
+services:
+#    correo.example:
+#        class: Agenda_ILM\CorreoBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
