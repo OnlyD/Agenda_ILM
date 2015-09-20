@@ -1,3 +1,8 @@
 producto_homepage:
     path:     /hello/{name}
     defaults: { _controller: ProductoBundle:Default:index }
+
+pagina_ayuda:
+    path: 	/hola/{name}
+    defaults: { _controller: ProductoBundle:Default:hola }
+
