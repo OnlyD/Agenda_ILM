@@ -20,12 +20,12 @@ class Evento
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
+	/**
      * @var integer
      *
-     * @ORM\Column(name="IdContacto", type="integer")
+     * @ORM\ManyToOne(targetEntity="Agenda_ILM\ContactoBundle\Entity\Contacto")
      */
+    
     private $IdContacto;
 
     /**
