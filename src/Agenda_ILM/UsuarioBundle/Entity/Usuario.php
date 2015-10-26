@@ -77,6 +77,20 @@ class Usuario
      */
     private $FechaModificacion;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Email", type="string")
+     */
+    private $Email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Role", type="string")
+     */
+    private $Role;
+
 
     /**
      * Get id
@@ -97,7 +111,7 @@ class Usuario
     public function setUsuario($usuario)
     {
         $this->Usuario = $usuario;
-
+    
         return $this;
     }
 
@@ -120,7 +134,7 @@ class Usuario
     public function setPassword($password)
     {
         $this->Password = $password;
-
+    
         return $this;
     }
 
@@ -143,7 +157,7 @@ class Usuario
     public function setPerfil($perfil)
     {
         $this->Perfil = $perfil;
-
+    
         return $this;
     }
 
@@ -166,7 +180,7 @@ class Usuario
     public function setNombre($nombre)
     {
         $this->Nombre = $nombre;
-
+    
         return $this;
     }
 
@@ -189,7 +203,7 @@ class Usuario
     public function setApellido($apellido)
     {
         $this->Apellido = $apellido;
-
+    
         return $this;
     }
 
@@ -212,7 +226,7 @@ class Usuario
     public function setStatus($status)
     {
         $this->Status = $status;
-
+    
         return $this;
     }
 
@@ -235,7 +249,7 @@ class Usuario
     public function setFechaCreacion($fechaCreacion)
     {
         $this->FechaCreacion = $fechaCreacion;
-
+    
         return $this;
     }
 
@@ -258,7 +272,7 @@ class Usuario
     public function setFechaModificacion($fechaModificacion)
     {
         $this->FechaModificacion = $fechaModificacion;
-
+    
         return $this;
     }
 
@@ -270,5 +284,51 @@ class Usuario
     public function getFechaModificacion()
     {
         return $this->FechaModificacion;
+    }
+
+    /**
+     * Set Email
+     *
+     * @param string $email
+     * @return Usuario
+     */
+    public function setEmail($email)
+    {
+        $this->Email = $email;
+    
+        return $this;
+    }
+
+    /**
+     * Get Email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->Email;
+    }
+
+    /**
+     * Set Role
+     *
+     * @param string $role
+     * @return Usuario
+     */
+    public function setRole($role)
+    {
+        $this->Role = $role;
+    
+        return $this;
+    }
+
+    /**
+     * Get Role
+     *
+     * @return string 
+     */
+    public function getRole()
+    {
+        return $this->Role;
     }
 }
