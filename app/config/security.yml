@@ -1,19 +1,12 @@
 security:
-    firewalls:
-        identificarse:
-          pattern: ^/*         
-          anonymous: ~
-          provider: users
-          form_login:
-            login_path: login
-            check_path: /login_check
-          logout:
-            path: logout
-            target: /
     providers:
-        users:
-            entity: { class: src\Agenda_ILM\UsuarioBundle\Entity\Usuario, property: Usuario }
-    access_control:
-        - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-    encoders:
-        src\Agenda_ILM\UsuarioBundle\Entity\Usuario: { algorithm: sha512, iterations: 10 }
+        in_memory:
+            memory: ~
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
+            security: false
+
+        default:
+            anonymous: ~
