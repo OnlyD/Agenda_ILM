@@ -20,3 +20,7 @@ _main:
 _welcome:
     path: /
     defaults: { _controller:AppBundle:Default:index }
+
+_welcomeBase:
+    path: /home
+    defaults: { _controller:AppBundle:Welcome:home }
