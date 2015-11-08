@@ -1,12 +1,18 @@
 security:
-    providers:
-        in_memory:
-            memory: ~
-
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
-            security: false
-
-        default:
-            anonymous: ~
+ firewalls:
+  login_firewall.:
+   pattern: ^/login$
+   anonymous: ~
+  secured_area:
+   pattern: ^/
+   form_login: ~
+  default:
+   anonymous: ~
+   http_basic: ~
+   form_login:
+    login_path: /login
+    check_path: /login_check
+ access_control:
+ providers:
+        users:
+            entity: { class: Agenda_ILM\UsuarioBundle\Entity\Usuario, property: Usuario }
