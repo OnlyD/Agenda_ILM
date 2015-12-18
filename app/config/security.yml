@@ -1,18 +1,32 @@
 security:
  firewalls:
-  login_firewall.:
-   pattern: ^/login$
-   anonymous: ~
-  secured_area:
-   pattern: ^/
-   form_login: ~
-  default:
-   anonymous: ~
-   http_basic: ~
-   form_login:
-    login_path: /login
-    check_path: /login_check
+         backend:
+            pattern:        ^/backend
+            provider:       administradores
+            http_basic:     ~
+         frontend:
+            pattern:        ^/*
+            provider:       usuarios
+            anonymous:      ~
+            form_login:
+                login_path: usuario_login
+                check_path: usuario_login_check
+            logout:
+                path:       usuario_logout
+            remember_me:
+                key:        cupon1234
+                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
  access_control:
+  - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+  - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+  - { path: ^/, roles: ROLE_USUARIO }
  providers:
-        users:
-            entity: { class: Agenda_ILM\UsuarioBundle\Entity\Usuario, property: Usuario }
+        usuarios:
+            entity: { class: Agenda_ILM\UsuarioBundle\Entity\Usuario, property: Email }
+        administradores:
+            memory:
+                users:
+                    # user = admin, pass = 1234
+                    admin: { password: Eti36Ru/pWG6WfoIPiDFUBxUuyvgMA4L8+LLuGbGyqV9ATuT9brCWPchBqX5vFTF+DgntacecW+sSGD+GZts2A==, roles: ROLE_USUARIO }
+ encoders: 
+  Agenda_ILM\UsuarioBundle\Entity\Usuario: {algorithm : sha512, iterations : 10, encode_as_base64: true }

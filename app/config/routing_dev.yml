@@ -24,6 +24,3 @@ _welcome:
 _welcomeBase:
     path: /home
     defaults: { _controller:AppBundle:Welcome:home }
-
-    path: /login
-    defaults: { _controller:AppBundle:Security:login }

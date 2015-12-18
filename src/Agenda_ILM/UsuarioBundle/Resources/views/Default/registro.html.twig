@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block id 'usuario' %}
+{% block title %}Regístrate gratis como usuario{% endblock %}
+
+{% block body %}
+<h1>{{ block('title') }}</h1>
+
+<form action="{{ path('usuario_registro') }}" method="post" {{ form_enctype(formulario) }}>
+    <div>
+    {{ form_errors(formulario) }}
+
+    <div>
+        {{ form_row(formulario.Nombre) }}
+    </div>
+
+    <div>
+        {{ form_label(formulario.Apellido) }}
+        {{ form_errors(formulario.Apellido) }}
+        {{ form_widget(formulario.Apellido, { 'attr': { 'class': 'largo' } }) }}
+    </div>
+
+    <div>
+        {{ form_label(formulario.Email) }}
+        {{ form_errors(formulario.Email) }}
+        {{ form_widget(formulario.Email, { 'attr': { 'class': 'largo' } }) }}
+    </div>
+
+    <div>
+        {{ form_errors(formulario.Password) }}
+        {{ form_widget(formulario.Password) }}
+
+        <p class="ayuda">Escribe dos veces la misma contraseña.</p>
+    </div>
+
+
+    {{ form_rest(formulario) }}
+
+    <input class="boton" type="submit" value="Registrarme" />
+
+    </div>
+</form>
+{% endblock %}
+
