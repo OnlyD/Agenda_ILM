@@ -1,39 +1,56 @@
 <?php
 
+/*
+ * (c) Javier Eguiluz <javier.eguiluz@gmail.com>
+ *
+ * Este archivo pertenece a la aplicación de prueba Cupon.
+ * El código fuente de la aplicación incluye un archivo llamado LICENSE
+ * con toda la información sobre el copyright y la licencia.
+ */
+
 namespace Agenda_ILM\UsuarioBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints as DoctrineAssert;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
- * Usuario
+ * Agenda_ILM\UsuarioBundle\Entity\Usuario
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Agenda_ILM\UsuarioBundle\Entity\UsuarioRepository")
+ * @DoctrineAssert\UniqueEntity("email")
+ * @Assert\Callback(methods={"esDniValido"})
  */
 class Usuario implements UserInterface
 {
-	function eraseCredentials() 
-	{ 
-	}
-	
-	function getRoles() 
-	{ 
-		return array('ROLE_USUARIO'); 
-	}
-	
-	function getUsername() 
-	{ 
-		return $this->getEmail(); 
-	}
-	
-	function getSalt()
-	{
-		
-	}
+    /**
+     * Método requerido por la interfaz UserInterface
+     */
+    public function eraseCredentials()
+    {
+    }
 
     /**
-     * @var integer
+     * Método requerido por la interfaz UserInterface
+     */
+    public function getRoles()
+    {
+        return array('ROLE_USUARIO');
+    }
+
+    /**
+     * Método requerido por la interfaz UserInterface
+     */
+    public function getUsername()
+    {
+        return $this->getEmail();
+    }
+
+    /**
+     * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -42,80 +59,167 @@ class Usuario implements UserInterface
     private $id;
 
     /**
-     * @var string
+     * @var string $nombre
      *
-     * @ORM\Column(name="Usuario", type="string")
+     * @ORM\Column(name="nombre", type="string", length=100)
+     * @Assert\NotBlank()
      */
-    private $Usuario;
+    private $nombre;
 
     /**
-     * @var string
+     * @var string $apellidos
      *
-     * @ORM\Column(name="Password", type="string")
+     * @ORM\Column(name="apellidos", type="string", length=255)
+     * @Assert\NotBlank()
      */
-    private $Password;
+    private $apellidos;
 
     /**
-     * @var string
+     * @var string $email
      *
-     * @ORM\Column(name="Perfil", type="string")
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email()
      */
-    private $Perfil;
+    private $email;
 
     /**
-     * @var string
+     * @var string $password
      *
-     * @ORM\Column(name="Nombre", type="string")
+     * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\NotBlank(groups={"registro"})
+     * @Assert\Length(min = 6)
      */
-    private $Nombre;
+    private $password;
 
     /**
-     * @var string
+     * @var string salt
      *
-     * @ORM\Column(name="Apellido", type="string")
+     * @ORM\Column(name="salt", type="string", length=255)
      */
-    private $Apellido;
+    protected $salt;
 
     /**
-     * @var integer
+     * @var text $direccion
      *
-     * @ORM\Column(name="Status", type="integer")
+     * @ORM\Column(name="direccion", type="text")
+     * @Assert\NotBlank()
      */
-    private $Status;
+    private $direccion;
 
     /**
-     * @var \DateTime
+     * @var boolean $permite_email
      *
-     * @ORM\Column(name="FechaCreacion", type="datetime")
+     * @ORM\Column(name="permite_email", type="boolean")
+     * @Assert\Type(type="bool")
      */
-    private $FechaCreacion;
+    private $permite_email;
 
     /**
-     * @var \DateTime
+     * @var datetime $fecha_alta
      *
-     * @ORM\Column(name="FechaModificacion", type="datetime")
+     * @ORM\Column(name="fecha_alta", type="datetime")
+     * @Assert\DateTime()
      */
-    private $FechaModificacion;
+    private $fecha_alta;
 
     /**
-     * @var string
+     * @var datetime $fecha_nacimiento
      *
-     * @ORM\Column(name="Email", type="string")
+     * @ORM\Column(name="fecha_nacimiento", type="datetime")
+     * @Assert\DateTime()
      */
-    private $Email;
+    private $fecha_nacimiento;
 
     /**
-     * @var string
+     * @var string $dni
      *
-     * @ORM\Column(name="Role", type="string")
+     * @ORM\Column(name="dni", type="string", length=9)
      */
-    private $Role;
+    private $dni;
 
+    /**
+     * @var string $numero_tarjeta
+     *
+     * @ORM\Column(name="numero_tarjeta", type="string", length=20)
+     * @Assert\Regex("/\d{11,19}/")
+     */
+    private $numero_tarjeta;
+
+
+    public function __construct()
+    {
+        $this->fecha_alta = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->getNombre().' '.$this->getApellidos();
+    }
+
+    public function __sleep(){
+        return array('id', 'nombre', 'email');
+    }
+
+    /**
+     * Validador propio que comprueba si el DNI introducido es válido
+     *
+     * El DNI es un identificador único obligatorio para todos los ciudadanos de
+     * España y de varios países americanos.
+     *
+     *   Formato:   entre 1 y 8 números seguidos de 1 letra
+     *   Ejemplos:  12345678Z - 11111111H - 01234567L
+     *
+     * Los números se pueden escoger aleatoriamente, pero la letra depende de los
+     * números y por tanto, actúa como carácter de control. ¿Cómo se obtiene la
+     * letra a partir de los números?
+     *
+     *   1. Obtener el 'mod 23' (resto de la división entera) del número
+     *      (e.g.: 12345678 mod 23 = 14).
+     *   2. Utilizar la siguiente tabla para elegir la letra que corresponde al
+     *      resultado de la operación anterior.
+     *
+     *   +--------+----+----+----+----+----+----+----+----+----+----+----+----+
+     *   | mod 23 |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 | 11 |
+     *   +--------+----+----+----+----+----+----+----+----+----+----+----+----+
+     *   | letra  |  T |  R |  W |  A |  G |  M |  Y |  F |  P |  D |  X |  B |
+     *   +--------+----+----+----+----+----+----+----+----+----+----+----+----+
+     *   | mod 23 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 |    |
+     *   +--------+----+----+----+----+----+----+----+----+----+----+----+----+
+     *   | letra  |  N |  J |  Z |  S |  Q |  V |  H |  L |  C |  K |  E |    |
+     *   +--------+----+----+----+----+----+----+----+----+----+----+----+----+
+     *   
+     */
+    public function esDniValido(ExecutionContextInterface $context)
+    {
+        $dni = $this->getDni();
+
+        // Comprobar que el formato sea correcto
+        if (0 === preg_match("/\d{1,8}[a-z]/i", $dni)) {
+            $context->addViolationAt('dni', 'El DNI introducido no tiene el formato correcto (entre 1 y 8 números seguidos de una letra, sin guiones y sin dejar ningún espacio en blanco)');
+
+            return;
+        }
+
+        // Comprobar que la letra cumple con el algoritmo
+        $numero = substr($dni, 0, -1);
+        $letra  = strtoupper(substr($dni, -1));
+        if ($letra != substr("TRWAGMYFPDXBNJZSQVHLCKE", strtr($numero, "XYZ", "012")%23, 1)) {
+            $context->addViolationAt('dni', 'La letra no coincide con el número del DNI. Comprueba que has escrito bien tanto el número como la letra');
+        }
+    }
+
+    /**
+     * @Assert\True(message = "Debes tener al menos 18 años para registrarte en el sitio")
+     */
+    public function isMayorDeEdad()
+    {
+        return $this->fecha_nacimiento <= new \DateTime('today - 18 years');
+    }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -123,232 +227,223 @@ class Usuario implements UserInterface
     }
 
     /**
-     * Set Usuario
-     *
-     * @param string $usuario
-     * @return Usuario
-     */
-    public function setUsuario($usuario)
-    {
-        $this->Usuario = $usuario;
-    
-        return $this;
-    }
-
-    /**
-     * Get Usuario
-     *
-     * @return string 
-     */
-    public function getUsuario()
-    {
-        return $this->Usuario;
-    }
-
-    /**
-     * Set Password
-     *
-     * @param string $password
-     * @return Usuario
-     */
-    public function setPassword($password)
-    {
-        $this->Password = $password;
-    
-        return $this;
-    }
-
-    /**
-     * Get Password
-     *
-     * @return string 
-     */
-    public function getPassword()
-    {
-        return $this->Password;
-    }
-
-    /**
-     * Set Perfil
-     *
-     * @param string $perfil
-     * @return Usuario
-     */
-    public function setPerfil($perfil)
-    {
-        $this->Perfil = $perfil;
-    
-        return $this;
-    }
-
-    /**
-     * Get Perfil
-     *
-     * @return string 
-     */
-    public function getPerfil()
-    {
-        return $this->Perfil;
-    }
-
-    /**
-     * Set Nombre
+     * Set nombre
      *
      * @param string $nombre
-     * @return Usuario
      */
     public function setNombre($nombre)
     {
-        $this->Nombre = $nombre;
-    
-        return $this;
+        $this->nombre = $nombre;
     }
 
     /**
-     * Get Nombre
+     * Get nombre
      *
-     * @return string 
+     * @return string
      */
     public function getNombre()
     {
-        return $this->Nombre;
+        return $this->nombre;
     }
 
     /**
-     * Set Apellido
+     * Set apellidos
      *
-     * @param string $apellido
-     * @return Usuario
+     * @param string $apellidos
      */
-    public function setApellido($apellido)
+    public function setApellidos($apellidos)
     {
-        $this->Apellido = $apellido;
-    
-        return $this;
+        $this->apellidos = $apellidos;
     }
 
     /**
-     * Get Apellido
+     * Get apellidos
      *
-     * @return string 
+     * @return string
      */
-    public function getApellido()
+    public function getApellidos()
     {
-        return $this->Apellido;
+        return $this->apellidos;
     }
 
     /**
-     * Set Status
-     *
-     * @param integer $status
-     * @return Usuario
-     */
-    public function setStatus($status)
-    {
-        $this->Status = $status;
-    
-        return $this;
-    }
-
-    /**
-     * Get Status
-     *
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->Status;
-    }
-
-    /**
-     * Set FechaCreacion
-     *
-     * @param \DateTime $fechaCreacion
-     * @return Usuario
-     */
-    public function setFechaCreacion($fechaCreacion)
-    {
-        $this->FechaCreacion = $fechaCreacion;
-    
-        return $this;
-    }
-
-    /**
-     * Get FechaCreacion
-     *
-     * @return \DateTime 
-     */
-    public function getFechaCreacion()
-    {
-        return $this->FechaCreacion;
-    }
-
-    /**
-     * Set FechaModificacion
-     *
-     * @param \DateTime $fechaModificacion
-     * @return Usuario
-     */
-    public function setFechaModificacion($fechaModificacion)
-    {
-        $this->FechaModificacion = $fechaModificacion;
-    
-        return $this;
-    }
-
-    /**
-     * Get FechaModificacion
-     *
-     * @return \DateTime 
-     */
-    public function getFechaModificacion()
-    {
-        return $this->FechaModificacion;
-    }
-
-    /**
-     * Set Email
+     * Set email
      *
      * @param string $email
-     * @return Usuario
      */
     public function setEmail($email)
     {
-        $this->Email = $email;
-    
-        return $this;
+        $this->email = $email;
     }
 
     /**
-     * Get Email
+     * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
-        return $this->Email;
+        return $this->email;
     }
 
     /**
-     * Set Role
+     * Set password
      *
-     * @param string $role
-     * @return Usuario
+     * @param string $password
      */
-    public function setRole($role)
+    public function setPassword($password)
     {
-        $this->Role = $role;
-    
-        return $this;
+        $this->password = $password;
     }
 
     /**
-     * Get Role
+     * Get password
      *
-     * @return string 
+     * @return string
      */
-    public function getRole()
+    public function getPassword()
     {
-        return $this->Role;
+        return $this->password;
     }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * Set direccion
+     *
+     * @param text $direccion
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return text
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set permite_email
+     *
+     * @param boolean $permiteEmail
+     */
+    public function setPermiteEmail($permiteEmail)
+    {
+        $this->permite_email = $permiteEmail;
+    }
+
+    /**
+     * Get permite_email
+     *
+     * @return boolean
+     */
+    public function getPermiteEmail()
+    {
+        return $this->permite_email;
+    }
+
+    /**
+     * Set fecha_alta
+     *
+     * @param datetime $fechaAlta
+     */
+    public function setFechaAlta($fechaAlta)
+    {
+        $this->fecha_alta = $fechaAlta;
+    }
+
+    /**
+     * Get fecha_alta
+     *
+     * @return datetime
+     */
+    public function getFechaAlta()
+    {
+        return $this->fecha_alta;
+    }
+
+    /**
+     * Set fecha_nacimiento
+     *
+     * @param datetime $fechaNacimiento
+     */
+    public function setFechaNacimiento($fechaNacimiento)
+    {
+        $this->fecha_nacimiento = $fechaNacimiento;
+    }
+
+    /**
+     * Get fecha_nacimiento
+     *
+     * @return datetime
+     */
+    public function getFechaNacimiento()
+    {
+        return $this->fecha_nacimiento;
+    }
+
+    /**
+     * Set dni
+     *
+     * @param string $dni
+     */
+    public function setDni($dni)
+    {
+        $this->dni = $dni;
+    }
+
+    /**
+     * Get dni
+     *
+     * @return string
+     */
+    public function getDni()
+    {
+        return $this->dni;
+    }
+
+    /**
+     * Set numero_tarjeta
+     *
+     * @param string $numeroTarjeta
+     */
+    public function setNumeroTarjeta($numeroTarjeta)
+    {
+        $this->numero_tarjeta = $numeroTarjeta;
+    }
+
+    /**
+     * Get numero_tarjeta
+     *
+     * @return string
+     */
+    public function getNumeroTarjeta()
+    {
+        return $this->numero_tarjeta;
+    }
+
 }

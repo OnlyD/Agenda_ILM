@@ -2,10 +2,6 @@ usuario:
     resource: "@UsuarioBundle/Resources/config/routing.yml"
     prefix:   /
 
-usuario:
-    resource: "@UsuarioBundle/Resources/config/routing.yml"
-    prefix:   /
-
 detalle_producto:
     resource: "@DetalleProductoBundle/Resources/config/routing.yml"
     prefix:   /

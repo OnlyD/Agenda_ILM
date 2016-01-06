@@ -1,14 +1,16 @@
-{% extends '::registrobase.html.twig' %}
+{% extends '::frontend.html.twig' %}
 
 {% block id 'usuario' %}
-{% block title %}Regístrate gratis como usuario{% endblock %}
+{% block title %}Ver / Modificar mis datos{% endblock %}
 
-{% block body %}
+{% block article %}
 <h1>{{ block('title') }}</h1>
 
 {{ form_start(formulario) }}
 <div>
-    {{ form_errors(formulario) }}
+    <div class="errors">
+        {{ form_errors(formulario) }}
+    </div>
 
     <div>
         {{ form_row(formulario.nombre) }}
@@ -27,10 +29,9 @@
     </div>
 
     <div>
-        {{ form_errors(formulario.password) }}
         {{ form_widget(formulario.password) }}
 
-        <p class="ayuda">Escribe dos veces la misma contraseña.</p>
+        <p class="ayuda">Si quieres cambiar la contraseña, escríbela dos veces. Si no quieres cambiarla, deja su valor vacío.</p>
     </div>
 
     <div>
@@ -43,8 +44,6 @@
         {{ form_label(formulario.fecha_nacimiento, 'Fecha de nacimiento') }}
         {{ form_errors(formulario.fecha_nacimiento) }}
         {{ form_widget(formulario.fecha_nacimiento) }}
-
-        <p class="ayuda">Debes tener más de 18 años para registrarte como cliente</p>
     </div>
 
     <div>
@@ -62,13 +61,18 @@
     </div>
 
     <div>
+        {{ form_row(formulario.ciudad) }}
+
+        <p class="ayuda">Aunque puedes comprar cualquier oferta de cualquier ciudad, la ciudad seleccionada será tu opción preferente.</p>
+    </div>
+
+    <div>
         {{ form_errors(formulario.permite_email) }}
         {{ form_widget(formulario.permite_email) }}
         <span>Me gustaría recibir el boletín de ofertas de Cupon</span>
     </div>
 
-    {{ form_row(formulario.registrarme, { 'attr': { 'class': 'boton' } }) }}
+    {{ form_widget(formulario.guardar) }}
 </div>
 {{ form_end(formulario) }}
 {% endblock %}
-
