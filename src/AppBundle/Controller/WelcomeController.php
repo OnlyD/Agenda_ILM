@@ -23,4 +23,10 @@ class WelcomeController extends Controller
 		
         return $this->render('default/datosusuario.html.twig');
     }
+	public function productosAction()
+    {
+		
+        return $this->render('default/datosusuario.html.twig');
+    }
+	
 }

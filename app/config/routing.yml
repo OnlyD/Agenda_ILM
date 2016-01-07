@@ -27,12 +27,12 @@ evento:
     prefix:   /
 
 language:
-    resource: "@LanguageBundle/Resources/config/routing.yml"
-    prefix:   /
+ resource: "@LanguageBundle/Resources/config/routing.yml"
+ prefix:   /
 
 country:
-    resource: "@CountryBundle/Resources/config/routing.yml"
-    prefix:   /
+ resource: "@CountryBundle/Resources/config/routing.yml"
+ prefix:   /
 
 city:
     resource: "@CityBundle/Resources/config/routing.yml"

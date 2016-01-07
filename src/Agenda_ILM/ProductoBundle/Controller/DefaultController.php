@@ -7,13 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function productoAction()
     {
-        return $this->render('ProductoBundle:Default:index.html.twig', array('name' => $name));
+		return $this->render('ProductoBundle:Default:productos.html.twig');
     }
 	
-	public function holaAction($name)
-	{
-		return $this->render('ProductoBundle:Default:index.html.twig', array('name' => $name));
-	}
+	
 }

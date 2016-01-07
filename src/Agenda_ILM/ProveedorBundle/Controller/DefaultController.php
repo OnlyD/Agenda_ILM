@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function provedoresAction()
     {
-        return $this->render('ProveedorBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('ProveedorBundle:Default:provedores.html.twig');
     }
 }
