@@ -1,0 +1,4 @@
+services:
+#    estado.example:
+#        class: Agenda_ILM\EstadoBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

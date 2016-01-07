@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new Agenda_ILM\ProductoBundle\ProductoBundle(),
             new Agenda_ILM\DetalleProductoBundle\DetalleProductoBundle(),
             new Agenda_ILM\UsuarioBundle\UsuarioBundle(),
+            new Agenda_ILM\EstadoBundle\EstadoBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
