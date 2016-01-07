@@ -2,12 +2,12 @@
 
 {% block body %}
 
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
+    {% if error %}
+        <div>{{ error.message }}</div>
+    {% endif %}
 
     	<div id="formContainer">
-			<form id="login" action="{{ path('login_check') }}" method="post">
+			<form id="login" action="{{ path('usuario_login_check') }}" method="post">
 				    <input type="text" id="loginEmail" name="_username" value="{{ last_username }}" placeholder="Usuario" />
 					<input type="password" id="loginPass" name="_password" placeholder="Contraseña"/>
 					<input type="submit" name="submit" value="Login" />

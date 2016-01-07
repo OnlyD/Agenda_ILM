@@ -2,15 +2,26 @@
 
 {% block body %}
 
+<<<<<<< HEAD
 
+=======
+    {% if error %}
+        <div>{{ error.message }}</div>
+    {% endif %}
+>>>>>>> a8338ebc077ebe211da4948bff3362cbf5738baa
 
     	<div id="formContainer">
-			<form id="login" method="post" action="./">
-				
-				<input type="text" name="loginEmail" id="loginEmail" value=""  placeholder="Email" />
-				<input type="password" name="loginPass" id="loginPass" value="" placeholder="Contraseña" />
-				<input type="submit" name="submit" value="Login" />
+			<form id="login" action="{{ path('usuario_login_check') }}" method="post">
+				    <input type="text" id="loginEmail" name="_username" value="{{ last_username }}" placeholder="Usuario" />
+					<input type="password" id="loginPass" name="_password" placeholder="Contraseña"/>
+					<input type="submit" name="submit" value="Login" />
+    {#
+
+        If you want to control the URL the user
+        is redirected to on success (more details below)
+        <input type="hidden" name="_target_path" value="/account" />
+    #}
 			</form>
-			
-		</div>
+		</div>		
+		
 {% endblock %}

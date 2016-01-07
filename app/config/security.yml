@@ -1,1 +1,48 @@
 security:
+<<<<<<< HEAD
+=======
+
+    firewalls:
+        # Firewall de la parte de administración o backend
+        backend:
+            pattern:        ^/backend
+            provider:       administradores
+            http_basic:     ~
+        # Firewall global utilizado en la parte pública o frontend
+        frontend:
+            pattern:        ^/*
+            provider:       usuarios
+            anonymous:      ~
+            form_login:
+                login_path: usuario_login
+                check_path: usuario_login_check
+            logout:
+                path:       usuario_logout
+            remember_me:
+                key:        cupon1234
+                lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
+
+    access_control:
+        - { path: ^/(es|en)/usuario/(login|registro), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/(es|en)/usuario/*, roles: ROLE_USUARIO }
+        - { path: ^/backend/*,         roles: ROLE_ADMIN }
+
+    encoders:
+        Agenda_ILM\UsuarioBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
+        Agenda_ILM\TiendaBundle\Entity\Tienda:          { algorithm: sha512, iterations: 10 }
+        Symfony\Component\Security\Core\User\User: sha512
+
+    providers:
+        # Usuarios del frontend
+        usuarios:
+            entity: { class: Agenda_ILM\UsuarioBundle\Entity\Usuario, property: email }
+        # Usuarios del backend
+        administradores:
+            memory:
+                users:
+                    # user = admin, pass = 1234
+                    admin: { password: Eti36Ru/pWG6WfoIPiDFUBxUuyvgMA4L8+LLuGbGyqV9ATuT9brCWPchBqX5vFTF+DgntacecW+sSGD+GZts2A==, roles: ROLE_ADMIN }
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_TIENDA, ROLE_USUARIO, ROLE_ALLOWED_TO_SWITCH]
+>>>>>>> a8338ebc077ebe211da4948bff3362cbf5738baa

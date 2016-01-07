@@ -22,6 +22,7 @@ _welcome:
     defaults: { _controller:AppBundle:Default:index }
 
 _welcomeBase:
+<<<<<<< HEAD
  path: /home
  defaults: { _controller:AppBundle:Welcome:home }
  
@@ -44,3 +45,7 @@ _provedores:
 _ciudad:
  path: /ciudad
  defaults: { _controller:CityBundle:Default:ciudad }
+=======
+    path: /home
+    defaults: { _controller:AppBundle:Welcome:home }
+>>>>>>> a8338ebc077ebe211da4948bff3362cbf5738baa
