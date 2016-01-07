@@ -1,7 +1,4 @@
 security:
-<<<<<<< HEAD
-=======
-
     firewalls:
         # Firewall de la parte de administración o backend
         backend:
@@ -45,4 +42,3 @@ security:
 
     role_hierarchy:
         ROLE_ADMIN: [ROLE_TIENDA, ROLE_USUARIO, ROLE_ALLOWED_TO_SWITCH]
->>>>>>> a8338ebc077ebe211da4948bff3362cbf5738baa
