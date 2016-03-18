@@ -31,14 +31,14 @@ class Producto
     /**
      * @var string
      *
-     * @ORM\Column(name="Nombre", type="string")
+	 * @ORM\Column(name="Nombre", type="string", length=100)
      */
     private $Nombre;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="Descripcion", type="string")
+	 * 
      */
     private $Descripcion;
 
@@ -66,7 +66,7 @@ class Producto
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="FechaModificacion", type="datetime")
+     * @ORM\Column(name="FechaModificacion", type="datetime" )
      */
     private $FechaModificacion;
 

@@ -44,7 +44,12 @@ _provedores:
 _ciudad:
  path: /ciudad
  defaults: { _controller:CityBundle:Default:ciudad }
+ 
 _estado:
   path: /estado
   defaults: { _controller:EstadoBundle:Default:estado}
+  
+_nuevoProductoss:
+ path: /productosnuevos
+ defaults: { _controller:ProductoBundle:Default:Nuevo_Producto}
 

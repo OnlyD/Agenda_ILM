@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+        <h2> Nuevos  Productos</h2>
+     
+	 <form  action="{{path('guardarProducto')}}"  method="post" {{form_enctype(form)}}>
+		{{form_widget(formulario)}}
+		<p>
+			<button type="submit">Create</button>
+		</p>
+	 </form>	
+	 
+	 <ul class='record_actions'>
+		<li>
+		
+			<a href="{{path('_productoss')}}">
+				Regresar
+			</a>
+		</li>
+		
+		
+{% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}
+
